@@ -530,15 +530,14 @@ def get_regional_naive_seq_bounds(return_reg, germlines, line, subtract_unphysic
             end[tmpreg] -= int(line['v_5p_del'])
         # end['j'] -= line['j_3p_del']  # ARG.ARG.ARG
 
-    # for key, val in line.items():
-    #     print key, val
+    for key, val in line.items():
+        print key, val
     for chkreg in regions:
-        # print chkreg, start[chkreg], end[chkreg]
+        print chkreg, start[chkreg], end[chkreg]
         assert start[chkreg] >= 0
         assert end[chkreg] >= 0
         assert end[chkreg] >= start[chkreg]
-    # print end['j'], len(line['seq']), line['v_5p_del'], line['j_3p_del']
-    print end['j']
+    print end['j'], len(line['seq']), line['v_5p_del'], line['j_3p_del']
     if end['j'] != len(line['seq']):
         raise Exception('end of j %d not equal to sequence length %d in %s' % (end['j'], len(line['seq']), line['unique_id']))
 
