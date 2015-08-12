@@ -49,8 +49,8 @@ class PerformancePlotter(object):
         NOTE this will not in general correspond to the similarly-assigned region in the inferred naive sequence.
         if <normalize> divide by sequence length
         """
-	print 'TRUE LINE: ', true_line, '\n'
-	print 'INFER LINE: ', line, 
+	#print 'TRUE LINE: ', true_line, '\n'
+	#print 'INFER LINE: ', line, 
         true_naive_seq = utils.get_full_naive_seq(self.germlines, true_line)
         inferred_naive_seq = utils.get_full_naive_seq(self.germlines, line)
 
@@ -64,7 +64,7 @@ class PerformancePlotter(object):
             left_hack_add_on = true_line['seq'][: start]
             right_hack_add_on = true_line['seq'][ end :]
             # extra_penalty = len(left_hack_add_on) + len(right_hack_add_on)
-            #inferred_naive_seq = 'N'*len(left_hack_add_on) + inferred_naive_seq + 'N'*len(right_hack_add_oni)
+            inferred_naive_seq = 'N'*len(left_hack_add_on) + inferred_naive_seq + 'N'*len(right_hack_add_oni)
             if debug:
                 print '  adding to inferred naive seq'
 
