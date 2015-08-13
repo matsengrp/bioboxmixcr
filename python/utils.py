@@ -410,7 +410,9 @@ def get_reco_event_seqs(germlines, line, original_seqs, lengths, eroded_seqs):
     get original and eroded germline seqs
     NOTE does not modify line
     """
+    print 'GET RECO EVENTS'
     for region in regions:
+	#print 'REGION: ', region
         #print "LINE INSIDE FOR LOOP: ", line[region + '_gene']
         del_5p = int(line[region + '_5p_del'])
         del_3p = int(line[region + '_3p_del'])
@@ -491,10 +493,12 @@ def add_cdr3_info(germlines, cyst_positions, tryp_positions, line, debug=False):
 
 # ----------------------------------------------------------------------------------------
 def get_full_naive_seq(germlines, line):  #, restrict_to_region=''):
-    #print '\nYYYYYY', line, '\n'
+    print '\nGET FULL NAIVE SEQ', line, '\n'
     #print 'FV INSERTION', line['fv_insertion']
     for erosion in real_erosions + effective_erosions:
+	#print 'FINAL CHECKS'
         if line[erosion + '_del'] < 0:
+	    print 'FINAL TRUES'
             print 'ERROR %s less than zero %d' % (erosion, line[erosion + '_del'])
         assert line[erosion + '_del'] >= 0
     original_seqs = {}  # original (non-eroded) germline seqs
@@ -502,6 +506,8 @@ def get_full_naive_seq(germlines, line):  #, restrict_to_region=''):
     eroded_seqs = {}  # eroded germline seqs
     get_reco_event_seqs(germlines, line, original_seqs, lengths, eroded_seqs)
     # if restrict_to_region == '':
+    print 'FV insertion: ', line['fv_insertion'], 'eroded seqs v: ', eroded_seqs['v'], 'vd insertion: ', line['vd_insertion'], 'eroded seqs d: ', eroded_seqs['d'], 'dj insertion: ',line['dj_insertion'], 'eroded seqs j: ', eroded_seqs['j'], 'jf insertion: ', line['jf_insertion'], '\n' 
+    #print 'ERODED SEQS: ', eroded_seqs
     return line['fv_insertion'] + eroded_seqs['v'] + line['vd_insertion'] + eroded_seqs['d'] + line['dj_insertion'] + eroded_seqs['j'] + line['jf_insertion']
     # else:
     # return eroded_seqs[restrict_to_region]
@@ -540,7 +546,7 @@ def get_regional_naive_seq_bounds(return_reg, germlines, line, subtract_unphysic
     #print end['j'], len(line['seq']), line['v_5p_del'], line['j_3p_del']
     if end['j'] != len(line['seq']):
         raise Exception('end of j %d not equal to sequence length %d in %s' % (end['j'], len(line['seq']), line['unique_id']))
-
+    print 'INSIDE OF RESTRICT TO REGION: ', start[return_reg], end[return_reg]
     return (start[return_reg], end[return_reg])
 
 # ----------------------------------------------------------------------------------------

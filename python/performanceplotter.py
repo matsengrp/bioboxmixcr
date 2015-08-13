@@ -13,10 +13,11 @@ bool_columns = ('v_gene', 'd_gene', 'j_gene')
 
 class PerformancePlotter(object):
     # ----------------------------------------------------------------------------------------
-    def __init__(self, germlines, name):
+    def __init__(self, germlines, name, only_correct_gene_fractions=False):
         self.germlines = germlines
         self.name = name
         self.values = {}
+        self.only_correct_gene_fractions = only_correct_gene_fractions
         for column in utils.index_columns:
             if column == 'cdr3_length':  # kind of finicky to figure out what this is, so I don't always set it
                 continue
@@ -49,8 +50,7 @@ class PerformancePlotter(object):
         NOTE this will not in general correspond to the similarly-assigned region in the inferred naive sequence.
         if <normalize> divide by sequence length
         """
-	#print 'TRUE LINE: ', true_line, '\n'
-	#print 'INFER LINE: ', line, 
+
         true_naive_seq = utils.get_full_naive_seq(self.germlines, true_line)
         inferred_naive_seq = utils.get_full_naive_seq(self.germlines, line)
 
@@ -64,7 +64,7 @@ class PerformancePlotter(object):
             left_hack_add_on = true_line['seq'][: start]
             right_hack_add_on = true_line['seq'][ end :]
             # extra_penalty = len(left_hack_add_on) + len(right_hack_add_on)
-            inferred_naive_seq = 'N'*len(left_hack_add_on) + inferred_naive_seq + 'N'*len(right_hack_add_oni)
+            inferred_naive_seq = 'N'*len(left_hack_add_on) + inferred_naive_seq + 'N'*len(right_hack_add_on)
             if debug:
                 print '  adding to inferred naive seq'
 
@@ -85,11 +85,9 @@ class PerformancePlotter(object):
 
         if debug:
             print restrict_to_region, 'region, bounds', bounds
-            #print '  true ', true_naive_seq
-            #print '  infer', inferred_naive_seq
-	print len(true_naive_seq), 'XXXXXXX', len(inferred_naive_seq)
-	print '\t', 'TRUE NAIVE SEQ ',true_naive_seq, '\n'
-	print '\t', 'TRUE INFERRED SEQ ',inferred_naive_seq, '\n'
+            print '  true ', true_naive_seq
+            print '  infer', inferred_naive_seq
+
         if len(true_naive_seq) != len(inferred_naive_seq):
             raise Exception('still not the same lengths for %s\n  %s\n  %s' % (query_name, true_naive_seq, inferred_naive_seq))
         fraction, len_excluding_ambig = utils.hamming_fraction(true_naive_seq, inferred_naive_seq, return_len_excluding_ambig=True)
@@ -128,10 +126,12 @@ class PerformancePlotter(object):
 
     # ----------------------------------------------------------------------------------------
     def evaluate(self, true_line, inf_line, padfo=None):
-
-        overall_mute_freq = utils.get_mutation_rate(self.germlines, true_line)  # true value
+ 	#CHANGES FOR MIXCR
+        #overall_mute_freq = utils.get_mutation_rate(self.germlines, true_line)  # true value
 
         for column in self.values:
+            if self.only_correct_gene_fractions and column not in bool_columns:
+                continue
             if column in bool_columns:
                 if utils.are_alleles(true_line[column], inf_line[column]):  # NOTE you have to change this above as well!
                     self.values[column]['right'] += 1
@@ -152,11 +152,12 @@ class PerformancePlotter(object):
                     trueval = 0  # NOTE this is a kind of weird way to do it, since diff ends up as really just the guessval, but it does the job
                     restrict_to_region = column[0].replace('h', '')  # if fist char in <column> is not an 'h', restrict to that region
                     normalize = '_norm' in column
-		    print 'QUERY NAME: ', inf_line['unique_id'], '\n'
                     guessval = self.hamming_distance_to_true_naive(true_line, inf_line, inf_line['unique_id'], restrict_to_region=restrict_to_region, normalize=normalize, padfo=padfo)
                 else:
-                    trueval = int(true_line[column])
-                    guessval = int(inf_line[column])
+		    #CHANGES FOR MIXCR
+		    return
+                    #trueval = int(true_line[column])
+                    #guessval = int(inf_line[column])
 
                 diff = guessval - trueval
                 if diff not in self.values[column]:
@@ -178,6 +179,8 @@ class PerformancePlotter(object):
     def plot(self, plotdir):
         utils.prep_dir(plotdir + '/plots', wildling=None, multilings=['*.csv', '*.svg', '*.root'])
         for column in self.values:
+            if self.only_correct_gene_fractions and column not in bool_columns:
+                continue
             if column in bool_columns:
                 right = self.values[column]['right']
                 wrong = self.values[column]['wrong']
