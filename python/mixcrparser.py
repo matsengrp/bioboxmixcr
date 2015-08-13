@@ -5,8 +5,13 @@ import csv
 import utils
 #from collections import OrderedDict
 #----------------------------
+#Get user input
+germlineDirectory = raw_input('Enter the path of the germline sequences): ') or 'data/imgt'
+originalInputFile = raw_input('Enter the path of the original input file into mixcr): ') or 'simu-10-leaves-1-mutate.csv'
+mixcrOutput = raw_input('Enter the path of the output from mixcr: ') or 'edited_output_file.txt'
+#----------------------------
 #hardcoded default germline sequences
-germline_seqs = utils.read_germlines("data/imgt") 
+germline_seqs = utils.read_germlines(germlineDirectory) 
 
 #create an instance of the performance plotter class
 perfplotter = PerformancePlotter(germline_seqs, 'mixcr')
@@ -14,8 +19,8 @@ perfplotter = PerformancePlotter(germline_seqs, 'mixcr')
 #fill in both inferred and true nested dictionaries
 trueDictionary = {}
 iDictionary = {}
-with open("simu-10-leaves-1-mutate.csv") as inFile1:
-	with open('edited_output_file.txt') as inFile2:
+with open(originalInputFile) as inFile1:
+	with open(mixcrOutput) as inFile2:
 		reader1 = csv.DictReader(inFile1)
 		reader2 = csv.DictReader(inFile2, delimiter='\t')
 		for row1, row2 in zip(reader1, reader2):
