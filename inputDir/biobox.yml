@@ -1,3 +1,3 @@
 germlineSeqDir: 'data/imgt'
-inputfile: 'simu-10-leaves-1-mutate.fasta'
-outputfile: 'output.txt'
+inputfile: './inputDir/simu-10-leaves-1-mutate.csv'
+outputfile: './outputDir/output.txt'
