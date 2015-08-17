@@ -1,3 +1,4 @@
-#germlineSeqDir: 'data/imgt'
-inputfile: './inputDir/simu-10-leaves-1-mutate.csv'
-#outputfile: 'output.txt'
+- Best V hit
+- Best D hit
+- Best J hit
+- simu
