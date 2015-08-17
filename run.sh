@@ -10,6 +10,7 @@ echo '#=============================================='
 echo 'ASSIGNING BASIC VARIABLES'
 YAMLINPUT=/bbx/input/biobox.yml
 DOCKEROUTPUTDIR=/bbx/output
+TASK=$1
 mkdir -p ${DOCKEROUTPUTDIR}
 #ls ${DOCKEROUTPUTDIR}
 echo '#=============================================='
