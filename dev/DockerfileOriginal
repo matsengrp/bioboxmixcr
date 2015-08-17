@@ -1,0 +1,25 @@
+FROM matsengrp/cpp
+RUN sed 's/main$/main universe/' -i /etc/apt/sources.list
+RUN add-apt-repository ppa:webupd8team/java -y
+RUN apt-get update
+RUN apt-get install -y \	
+RUN echo oracle-java7-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections
+RUN apt-get install -y \	
+#	libroot-bindings-python-dev \	
+#	libroot-graf2d-postscript5.34
+	oracle-java7-installer 
+
+COPY . /mixcr
+WORKDIR /mixcr
+
+#RUN echo ${PWD}
+#ENV PATH ${PATH}:/bbx/
+
+ADD run.sh /usr/local/bin/
+RUN cd /usr/local/bin && chmod 700 run.sh
+#RUN cd /usr/local/bin
+
+#RUN echo ${PWD}
+#RUN ls
+
+ENTRYPOINT ["./run.sh"]
