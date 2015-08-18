@@ -16,6 +16,7 @@ echo '#=============================================='
 echo 'CACHING PARAMETERS'
 . ./inputDir/parse_yaml.sh
 eval $(parse_yaml $YAMLINPUT 'mixcr_')
+echo $YAMLINPUT
 
 INPUTFILE=$mixcr_inputfile
 #if the input file is in csv or tsv format run conversion scripts into fasta
@@ -31,13 +32,23 @@ elif [ ${INPUTFILE: -4} == ".tsv" ] ; then
 	INPUTFILE=${INPUTFILE:0:${#INPUTFILE}-4}'.fasta'
 fi
 echo '#=============================================='
-echo 'PROCESSING COMMAND'
+echo 'GENERATING TASKFILE'
 CURRENTDIR=$(pwd)
 echo $CURRENTDIR
 echo $INPUTFILE
-CMD1='export PATH=${CURRENTDIR}:$PATH && mixcr align ${INPUTFILE} output_file.vdjca && mixcr exportAlignments'
-CMD3='output_file.vdjca /bbx/output/output.txt'
-CMD= $CMD1$CMD2$CMD3
+echo -n 'default: export PATH=${CURRENTDIR}:$PATH && mixcr align ${INPUTFILE} output_file.vdjca && ' >> ./Taskfile
+echo -n 'mixcr exportAlignments' >> ./Taskfile
+#INSERT COMMAND LINE PARAMETERS HERE
+echo -n ' output_file.vdjca /bbx/output/output.txt' >> ./Taskfile
+ls
+cat Taskfile
+echo '#=============================================='
+echo 'PROCESSING COMMAND'
+CMD=$(egrep ^${TASK}: ./Taskfile | cut -f 2 -d ':')
+if [[ -z ${CMD} ]]; then
+	echo "Abort, no task found for '${TASK}'."
+	exit 1
+fi
 echo $CMD
 eval $CMD
 echo 'PROCESS COMPLETED'

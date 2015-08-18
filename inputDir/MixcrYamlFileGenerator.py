@@ -15,23 +15,24 @@ parameters = {0:'Best V hit', 1:'Best D hit', 2:'Best J hit', 3:'Best C hit', 4:
 print parameters
 #===================================================
 #List to contain user input
-#User will input numbers that correspond to parameters  
-values = {} 
+#User will input numbers that correspond to parameters 
+values ={}
+for i in parameters:
+	values[parameters[i]] = False
 key = -1
 while(True):
 	key = int(raw_input('Next parameter? (enter \'-1\' to end): '))
 	if(key==-1):
 		break
 	else:
-		#values.append(parameters[key])
-		values[key] = parameters[key] 
+		values[parameters[key]] = True
 print 'Parameter collection complete'
 print 'Here is the list of parameters you have specified:'
 print values
 #===================================================
+#Creates a temporary dictionary with single key-value pair containing name of input file
 inputFileName = raw_input('Enter the name of the input file: ')
-#values.append(inputFileName) 
-values['inputFileName'] = inputFileName
+values['inputfile'] = inputFileName
 #===================================================
 with open('biobox.yml', 'w') as writer:
 	writer.write(yaml.dump(values, default_flow_style=False))
