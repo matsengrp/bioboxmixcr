@@ -1,0 +1,15 @@
+#MANUAL FOR A BIOBOX CONTAINING PROJECT MIXCR
+#8-18-15
+=====================
+1. Git clone this repository: https://github.com/btcr/bioboxmixcr.git
+2.Navigate into the input_data directory and run YamlFileGenerator.py. Here you will enter all the parameters for generating the 
+input. Make sure the resulting file (biobox.yml) is in the input_data directory.
+3. Navigate back to the main directory and build the docker image from the docker file "docker build -t <name of image> ."
+4. Now you will actually run the program using this docker command: docker run --volume="$(pwd)/inputDir:/bbx/input:ro" --volume="$(pwd)/outputDir:/bbx/output:rw" bioboxmixcr 
+
+You should now see the output files in the directory you specified.
+==============================
+-You must have docker installed to run this program.
+-The --volume tags in the Docker command will link the directory on your local machine to directories within the docker container
+-This current version only contains a limited number of parameters for the export function of Mixcr.
+=====================
