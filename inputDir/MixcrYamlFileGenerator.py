@@ -16,20 +16,22 @@ print parameters
 #===================================================
 #List to contain user input
 #User will input numbers that correspond to parameters  
-values = [] 
+values = {} 
 key = -1
 while(True):
 	key = int(raw_input('Next parameter? (enter \'-1\' to end): '))
 	if(key==-1):
 		break
 	else:
-		values.append(parameters[key])
+		#values.append(parameters[key])
+		values[key] = parameters[key] 
 print 'Parameter collection complete'
 print 'Here is the list of parameters you have specified:'
 print values
 #===================================================
 inputFileName = raw_input('Enter the name of the input file: ')
-values.append(inputFileName) 
+#values.append(inputFileName) 
+values['inputFileName'] = inputFileName
 #===================================================
 with open('biobox.yml', 'w') as writer:
 	writer.write(yaml.dump(values, default_flow_style=False))

@@ -12,16 +12,12 @@ YAMLINPUT=/bbx/input/biobox.yml
 DOCKEROUTPUTDIR=/bbx/output
 TASK=$1
 mkdir -p ${DOCKEROUTPUTDIR}
-#ls ${DOCKEROUTPUTDIR}
 echo '#=============================================='
 echo 'CACHING PARAMETERS'
 . ./inputDir/parse_yaml.sh
 eval $(parse_yaml $YAMLINPUT 'mixcr_')
 
 INPUTFILE=$mixcr_inputfile
-#echo $INPUTFILE
-#ls 
-#ls inputDir
 #if the input file is in csv or tsv format run conversion scripts into fasta
 if [ ${INPUTFILE: -4} == ".csv" ] ; then
 	#run csv conversion script
@@ -37,15 +33,28 @@ elif [ ${INPUTFILE: -4} == ".tsv" ] ; then
 	python python/tsv2fasta.py $INPUTFILE
 	INPUTFILE=${INPUTFILE:0:${#INPUTFILE}-4}'.fasta'
 fi
-echo $INPUTFILE
+#echo $INPUTFILE
+echo '#=============================================='
+echo 'GENERATING TASKFILE'
+echo -n 'default: export PATH=${CURRENTDIR}:$PATH && mixcr align ${INPUTFILE} output_file.vdjca' >> ./Taskfile
+#INSERT COMMAND LINE PARAMETERS HERE
+echo -n 'mixcr exportAlignments output_file.vdjca /bbx/output/output.txt' >> ./Taskfile
+#ls
+#echo 'Taskfile: '
+#cat Taskfile
 echo '#=============================================='
 echo 'PROCESSING COMMAND'
-CURRENTDIR=$(pwd)
-echo $CURRENTDIR
-echo $INPUTFILE
-CMD='export PATH=${CURRENTDIR}:$PATH && mixcr align ${INPUTFILE} output_file.vdjca && mixcr exportAlignments output_file.vdjca /bbx/output/output.txt'
+#CURRENTDIR=$(pwd)
+CMD=$(egrep ^${TASK}: ./Taskfile | cut -f 2 -d ':')
+if [[ -z ${CMD} ]]; then
+	echo "Abort, no task found for '${TASK}'."
+	exit 1
+fi
+#echo $CURRENTDIR
+#echo $INPUTFILE
+#CMD='export PATH=${CURRENTDIR}:$PATH && mixcr align ${INPUTFILE} output_file.vdjca && mixcr exportAlignments output_file.vdjca /bbx/output/output.txt'
 eval $CMD
-ls
+#ls
 echo 'PROCESS COMPLETED'
 
 
