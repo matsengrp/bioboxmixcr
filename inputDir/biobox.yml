@@ -1,4 +1,4 @@
 - -vHit
 - -dHit
 - -jHit
-inputfile: simu
+inputfile: ./inputDir/simu-10-leaves-1-mutate.fasta 
