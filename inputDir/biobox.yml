@@ -1,19 +1,19 @@
-All C Alignments: false
-All C hits: false
-All D alignments: false
-All D hits: false
-All J alignments: false
-All J hits: false
-All V alignments: false
-All V hits: false
-Best C alignment: false
-Best C hit: false
-Best D alignment: false
-Best D hit: true
-Best J alignment: false
-Best J hit: true
-Best V alignment: false
-Best V hit: true
+AllCAlignments: false
+AllChits: false
+AllDalignments: false
+AllDhits: false
+AllJalignments: false
+AllJhits: false
+AllValignments: false
+AllVhits: false
+BestCalignment: false
+BestChit: false
+BestDalignment: false
+BestDhit: true
+BestJalignment: false
+BestJhit: true
+BestValignment: false
+BestVhit: true
 descrR1: false
 descrR2: false
 inputfile: simu

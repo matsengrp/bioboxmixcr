@@ -11,7 +11,7 @@ print 'To specify parameters, enter in the corresponding number.'
 print 'When you are done entering parameters, enter -2'
 #===================================================
 #Dictionary to contain parameters and their respective keys
-parameters = {0:'Best V hit', 1:'Best D hit', 2:'Best J hit', 3:'Best C hit', 4:'All V hits', 5:'All D hits', 6:'All J hits', 7:'All C hits', 8:'Best V alignment', 9:'Best D alignment', 10:'Best J alignment', 11:'Best C alignment', 12:'All V alignments', 13:'All D alignments', 14:'All J alignments', 15:'All C Alignments', 16:'sequence', 17:'quality', 18:'readId', 19:'targets', 20:'descrR1', 21:'descrR2'}
+parameters = {0:'BestVhit', 1:'BestDhit', 2:'BestJhit', 3:'BestChit', 4:'AllVhits', 5:'AllDhits', 6:'AllJhits', 7:'AllChits', 8:'BestValignment', 9:'BestDalignment', 10:'BestJalignment', 11:'BestCalignment', 12:'AllValignments', 13:'AllDalignments', 14:'AllJalignments', 15:'AllCAlignments', 16:'sequence', 17:'quality', 18:'readId', 19:'targets', 20:'descrR1', 21:'descrR2'}
 print parameters
 #===================================================
 #List to contain user input
