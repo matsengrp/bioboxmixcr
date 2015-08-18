@@ -27,7 +27,7 @@ while(True):
 	if(key=='exit'):
 		break
 	else:
-		values.append(key)	
+		values.append(parameters[key])	
 print 'Parameter collection complete'
 print 'Here is the list of parameters you have specified:'
 print values
