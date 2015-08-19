@@ -1,9 +1,9 @@
-#This script takes in the inferences for gene locations from Mixcr in the form of a text file and outputs a directory containing the results in both table and histogram form.
+#This script takes in the inferences for gene locations from project Mixcr in the form of a text file and outputs a directory containing the results in both table and histogram form.
 #----------------------------
+#Import relevant packages
 from performanceplotter import PerformancePlotter
 import csv
 import utils
-#from collections import OrderedDict
 #----------------------------
 #Get user input
 germlineDirectory = raw_input('Enter the path of the germline sequences): ') or 'data/imgt'
@@ -16,7 +16,8 @@ germline_seqs = utils.read_germlines(germlineDirectory)
 #create an instance of the performance plotter class
 perfplotter = PerformancePlotter(germline_seqs, 'mixcr')
 
-#fill in both inferred and true nested dictionaries
+#The true dictionary contains the correct locations taken from the original simulated data file
+#The inferred dictionary (iDictionary) will contain the inferences of those locations from Mixcr
 trueDictionary = {}
 iDictionary = {}
 with open(originalInputFile) as inFile1:
@@ -37,16 +38,18 @@ with open(originalInputFile) as inFile1:
 			iDictionary[unique_id]['j_gene'] = row2['Best J hit']
 			#print iDictionary[unique_id]
 
-#run evaluate
+#run evaluate function from performanceplotter.py
 for key in trueDictionary:
 	#if key == '123818946361786991':
 		#print 'RUNNING EVALUATE ON: ', key
 	perfplotter.evaluate(trueDictionary[key], iDictionary[key])
 	#perfplotter.evaluate(trueDictionary[key], iDictionary[key])
 print 'COMPLETED EVALUATE'
-#generate output inside of plot directory
+#plot the information gained from the 'evaluate' function
 perfplotter.plot('mixcrPlotDir')			
-
+print 'COMPLETED PLOTTING'
+#----------------------------
+#Code from previous development
 '''	
 with open("simu-10-leaves-1-mutate.csv") as inFile1:
 	with open('edited_output_file.txt') as inFile2:

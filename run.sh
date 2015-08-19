@@ -16,38 +16,41 @@ echo '#=============================================='
 echo 'CACHING PARAMETERS'
 . ./inputDir/parse_yaml.sh
 eval $(parse_yaml $YAMLINPUT 'mixcr_')
-#create array to intake keys whose values are not false, add the values of those keys to a string 'CMD2'
+#$CMD2 will be a string containing the specified command line arguments from $YAMLINPUT 
 CMD2=''
 while read LINE; do
 	if [ ${LINE:0:9} == "inputfile" ] ; then
-		echo '	inside if' 
+		#echo '	inside if' 
 		break
 	fi
-	#remove - from beginning of line
+	#remove '-' from beginning of line
 	LINE=${LINE:1}
+	#concatenation
 	CMD2=$CMD2$LINE' '
 done <./inputDir/biobox.yml
 INPUTFILE=$mixcr_inputfile
 #if the input file is in csv or tsv format run conversion scripts into fasta
-if [ ${INPUTFILE: -4} == ".csv" ] ; then
+#echo ${INPUTFILE: -5}
+if [ ${INPUTFILE: -5} == ".csv" ] ; then
 	#run csv conversion script
 	echo '  RUNNING CSV CONVERSION'
 	python conversionScripts/csv2fasta.py $INPUTFILE
-	INPUTFILE=${INPUTFILE:0:${#INPUTFILE}-4}'.fasta'
-elif [ ${INPUTFILE: -4} == ".tsv" ] ; then 
+	INPUTFILE=${INPUTFILE:0:${#INPUTFILE}-5}'.fasta'
+elif [ ${INPUTFILE: -5} == ".tsv" ] ; then 
 	#run tsv conversion script
 	echo '	RUNNING TSV CONVERSION'
 	python conversionScripts/tsv2fasta.py $INPUTFILE
-	INPUTFILE=${INPUTFILE:0:${#INPUTFILE}-4}'.fasta'
+	INPUTFILE=${INPUTFILE:0:${#INPUTFILE}-5}'.fasta'
 fi
 echo '#=============================================='
 echo 'PROCESSING COMMAND'
 CURRENTDIR=$(pwd)
-echo $CURRENTDIR
-echo $INPUTFILE
+#echo $CURRENTDIR
+#echo $INPUTFILE
 CMD1='export PATH=${CURRENTDIR}:$PATH && mixcr align ${INPUTFILE} output_file.vdjca && mixcr exportAlignments '
 CMD3='output_file.vdjca /bbx/output/output.txt'
 CMD=$CMD1$CMD2$CMD3
+echo -n 'Running command: '
 echo $CMD
 eval $CMD
 echo 'PROCESS COMPLETED'
