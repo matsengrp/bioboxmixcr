@@ -1,4 +1,5 @@
+- -sequence
 - -vHit
 - -dHit
 - -jHit
-inputfile: ./inputDir/simu-10-leaves-1-mutate.csv 
+inputfile: ./inputDir/simu-10-leaves-1-mutate.csv  
