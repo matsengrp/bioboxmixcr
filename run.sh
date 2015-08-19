@@ -32,12 +32,12 @@ INPUTFILE=$mixcr_inputfile
 if [ ${INPUTFILE: -4} == ".csv" ] ; then
 	#run csv conversion script
 	echo '  RUNNING CSV CONVERSION'
-	python python/csv2fasta.py $INPUTFILE
+	python conversionScripts/csv2fasta.py $INPUTFILE
 	INPUTFILE=${INPUTFILE:0:${#INPUTFILE}-4}'.fasta'
 elif [ ${INPUTFILE: -4} == ".tsv" ] ; then 
 	#run tsv conversion script
 	echo '	RUNNING TSV CONVERSION'
-	python python/tsv2fasta.py $INPUTFILE
+	python conversionScripts/tsv2fasta.py $INPUTFILE
 	INPUTFILE=${INPUTFILE:0:${#INPUTFILE}-4}'.fasta'
 fi
 echo '#=============================================='
